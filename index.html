@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
+  <link rel="stylesheet" href="index.css">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Karla:ital,wght@0,200..800;1,200..800&family=Kumbh+Sans:wght@100..900&family=Outfit:wght@100..900&family=Overpass:ital,wght@0,100..900;1,100..900&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&family=Rubik:ital,wght@0,300..900;1,300..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    rel="stylesheet">
+  <title>Tic Tac Toe</title>
+</head>
+
+<body>
+  <main class="bg-[#1A2A33] min-h-screen flex items-center justify-center relative">
+    <!-- New game menu start -->
+    <section id="menu" class="w-full md:max-w-[460px] max-w-[327px] grid gap-10 justify-items-center ">
+      <img src="./assets/logo.svg" alt="logo">
+      <!-- Pick player -->
+      <div id="pick-player" class="box-primary w-full gap-6 p-6">
+        <h1 class="text-[#A8BFC9] heading-sm ">Pick player 1's mark</h1>
+        <div id="toggle-buttons" class="relative w-full rounded-[15px] bg-[#1A2A33] flex p-2 gap-2 justify-center">
+          <!-- Sliding background indicator -->
+          <div id="toggle-slider"
+            class="absolute top-2 left-2 w-[calc(50%-8px)] h-[calc(100%-16px)] bg-[#A8BFC9] rounded-[10px] transition-transform duration-300 ease-in-out">
+          </div>
+
+          <!-- Button X -->
+          <button
+            class="hover:bg-[rgba(168,191,201,0.05)] relative z-10 flex items-center justify-center cursor-pointer rounded-[10px] bg-transparent  w-1/2 p-2 transition-all duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+              class="w-8 h-8 text-[#1A2A33] transition-colors duration-300">
+              <path
+                d="M15.002 1.147 32 18.145 48.998 1.147a3 3 0 0 1 4.243 0l9.612 9.612a3 3 0 0 1 0 4.243L45.855 32l16.998 16.998a3 3 0 0 1 0 4.243l-9.612 9.612a3 3 0 0 1-4.243 0L32 45.855 15.002 62.853a3 3 0 0 1-4.243 0L1.147 53.24a3 3 0 0 1 0-4.243L18.145 32 1.147 15.002a3 3 0 0 1 0-4.243l9.612-9.612a3 3 0 0 1 4.243 0Z"
+                fill="currentColor" fill-rule="evenodd" />
+            </svg>
+          </button>
+
+          <!-- Button O -->
+          <button
+            class=" hover:bg-[rgba(168,191,201,0.05)] relative z-10 flex items-center justify-center cursor-pointer rounded-[10px] bg-transparent  w-1/2 p-2 transition-all duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"
+              class="w-8 h-8 text-[#A8BFC9] transition-colors duration-300">
+              <path
+                d="M32 0c17.673 0 32 14.327 32 32 0 17.673-14.327 32-32 32C14.327 64 0 49.673 0 32 0 14.327 14.327 0 32 0Zm0 18.963c-7.2 0-13.037 5.837-13.037 13.037 0 7.2 5.837 13.037 13.037 13.037 7.2 0 13.037-5.837 13.037-13.037 0-7.2-5.837-13.037-13.037-13.037Z"
+                fill="currentColor" />
+            </svg>
+          </button>
+        </div>
+        <p class="text-[#A8BFC9] body">Remember: X goes first</p>
+      </div>
+
+
+      <!-- New Game Buttons -->
+      <div class="space-y-5 text-[#1A2A33] w-full">
+        <button id="vs-cpu" class="btn-primary-1 heading-sm w-full py-4 cursor-pointer">NEW GAME (VS CPU)</button>
+        <button id="vs-player" class="btn-primary-2 heading-sm w-full py-4 cursor-pointer">NEW GAME
+          (VS
+          PLAYER)</button>
+      </div>
+    </section>
+
+    <!-- Game board start -->
+    <section id="game" class="flex flex-col gap-6 w-full md:max-w-[460px] max-w-[327px]  h-full hidden">
+      <!-- header -->
+      <div class="flex justify-between items-center w-full mx-auto">
+        <div class="flex items-center justify-center h-full">
+          <img src="./assets/logo.svg" alt="logo" class="object-cover h-full">
+        </div>
+        <div
+          class="lg:w-35 w-24 h-[52px] gap-3 flex items-center justify-center bg-[#1F3641] rounded-[10px] -translate-x-3">
+          <div id="turn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="w-5 h-5 text-[#A8BFC9]">
+              <path
+                d="M15.002 1.147 32 18.145 48.998 1.147a3 3 0 0 1 4.243 0l9.612 9.612a3 3 0 0 1 0 4.243L45.855 32l16.998 16.998a3 3 0 0 1 0 4.243l-9.612 9.612a3 3 0 0 1-4.243 0L32 45.855 15.002 62.853a3 3 0 0 1-4.243 0L1.147 53.24a3 3 0 0 1 0-4.243L18.145 32 1.147 15.002a3 3 0 0 1 0-4.243l9.612-9.612a3 3 0 0 1 4.243 0Z"
+                fill="currentColor" fill-rule="evenodd" />
+            </svg>
+          </div>
+          <span class="text-[#A8BFC9] heading-xs">TURN</span>
+        </div>
+        <!-- reset button -->
+        <button id="reset-btn"
+          class="btn-again w-10 h-10 md:w-13 md:h-13 flex items-center justify-center cursor-pointer">
+          <img src="./assets/icon-restart.svg" alt="icon-restart">
+        </button>
+      </div>
+
+      <!-- game board -->
+      <div id="game-board" class="grid grid-cols-3 aspect-square gap-8 my-8"></div>
+
+      <!-- score bar / Player Label-->
+      <div id="score-bar" class="flex justify-between text-[#1A2A33] body">
+        <!-- Player 1 -->
+        <div id=""
+          class="flex flex-col items-center justify-center rounded-[15px] bg[#31C3BD] px-10 py-3 w-full md:max-w-[140px] max-w-[96px]">
+          <div><span id="player-1">P1</span>(<span id="player1-mark"></span>)
+          </div>
+          <span id="point-p1" class="heading-md">0</span>
+        </div>
+        <!-- Ties -->
+        <div id="ties"
+          class="flex flex-col items-center justify-center rounded-[15px] bg-[#A8BFC9] px-10 py-3 w-full md:max-w-[140px] max-w-[96px]">
+          <div>Ties</div>
+          <span id="point-ties" class="heading-md">0</span>
+        </div>
+        <!-- Player 2 -->
+        <div id=""
+          class="flex flex-col items-center justify-center rounded-[15px] bg[#F2B137] px-10 py-3 w-full md:max-w-[140px] max-w-[96px]">
+          <div><span id="player-2">P2</span>(<span id="player2-mark"></span>)
+          </div>
+          <span id="point-p2" class="heading-md">0</span>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- End Modal Container -->
+    <section id="end-modal" class="min-h-screen absolute inset-0 hidden">
+      <div class="absolute inset-0 z-20 bg-[#000000]/50 "></div>
+      <!--(WIN/TIE) Detail Modal  -->
+      <div id="detail-modal"
+        class="hidden absolute w-screen h-[266px] my-auto inset-0 z-30 bg-[#1F3641] py-[45px] grid justify-items-center gap-5">
+        <div id="win-title" class="text-[#A8BFC9] heading-xs"></div>
+        <div id="round-modal" class="flex items-center gap-8 text-[#F2B137]">
+          <div id="round-icon">
+            <img src="./assets/icon-o.svg" alt="icon-o">
+          </div>
+          <div id="round-title" class=" heading-lg">TAKES THE ROUND</div>
+          <div id="round-ties" class=" heading-lg text-[#A8BFC9]">ROUND TIE</div>
+        </div>
+        <div class="flex gap-4 heading-xs">
+          <button id="quit-btn" class="btn-secondary-1 px-5 py-4 cursor-pointer">QUIT</button>
+          <button id="nextRound-btn" class="btn-secondary px-6 cursor-pointer">NEXT ROUND</button>
+        </div>
+      </div>
+
+      <!-- Detail Modal -->
+      <div id="reset-modal"
+        class="hidden absolute w-screen h-[266px] my-auto inset-0 z-30 bg-[#1F3641] py-[45px] grid justify-items-center gap-5">
+
+        <div class="flex items-center gap-8">
+          <div class="text-[#A8BFC9] heading-lg">RESTART GAME?</div>
+        </div>
+        <div class="flex gap-4 heading-xs">
+          <button id="cancel-btn" class="btn-secondary-1 px-5 py-4 cursor-pointer">NO, CANCEL</button>
+          <button id="restart-btn" class="btn-secondary px-6 cursor-pointer">YES, RESTART</button>
+        </div>
+      </div>
+    </section>
+
+
+  </main>
+
+
+
+
+</body>
+<script src="index.js"></script>
+
+</html>
