@@ -421,6 +421,19 @@ const UI = {
 
       // Add click event listener for each cell
       cell.addEventListener("click", () => gameControler.handleCellClick(i));
+      cell.addEventListener("mouseenter", () => {
+        if (!cell.innerHTML) {
+          cell.style.backgroundImage = `url('assets/icon-${gameState.currentPlayer}-outline.svg')`;
+          cell.style.backgroundSize = "50%";
+          cell.style.backgroundRepeat = "no-repeat";
+          cell.style.backgroundPosition = "center";
+        }
+      });
+      cell.addEventListener("mouseleave", () => {
+        if (!cell.innerHTML) {
+          cell.style.backgroundImage = "";
+        }
+      });
       dom.gameBoard.appendChild(cell);
     }
   },
@@ -434,6 +447,7 @@ const UI = {
     const cell = document.querySelector(`[data-cell="${cellIndex}"]`);
     const icon = mark === "X" ? "icon-x" : "icon-o";
     cell.innerHTML = `<img src="./assets/${icon}.svg" alt="${icon}">`;
+    cell.style.backgroundImage = "";
   },
 
   /**
@@ -622,6 +636,7 @@ const gameControler = {
     // Validate move: game must be active and cell must be empty
     if (!gameState.isActive || gameState.board[cellIndex] !== null) return;
 
+    gameState;
     // Route to appropriate handler based on game mode
     if (gameState.gameMode === "cpu") {
       this.handleCPUMove(cellIndex);
